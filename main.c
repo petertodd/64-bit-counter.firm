@@ -87,14 +87,21 @@ void main(){
   T2CON = b(00000100);
   CCPR1L = 0x10;
 
-  // Setup TMR0. 16mhz/4/256/16 = 16384 cycles/int 
+  // Last digit in the hardware counter:
+  // 64mhz / 2^16 = 976hz
+  //
+  // Our oscillator is 16mhz, therefor:
+  //
+  // 16mhz/4/256/8/4 = 488hz
+  //
+  // Mind... Shouldn't the last divisor be 2, not 4?
   INTCONbits.T0IF = 0;
   INTCONbits.T0IE = 1;
   INTCONbits.GIE = 1;
-  T0CON = b(11001011); 
+  T0CON = b(11000010); 
 
-  // Done setting up, loop until the end of time.
-  //main_loop();
+  while (1){
+  }
 }
 
 // Local Variables:
