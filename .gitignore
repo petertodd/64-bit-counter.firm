@@ -1,0 +1,7 @@
+.depend*
+64-bit-counter*
+*.asm
+*.lst
+*.o
+combined.hex
+*.swp
