@@ -21,7 +21,7 @@
 #include <signal.h>
 #include <counter.h>
 
-code char at __CONFIG1H config1h = 0xFF & _OSC_EXT_Port_on_RA6_1H; 
+code char at __CONFIG1H config1h = 0xFF & _OSC_EXT_Port_on_RA6_1H & _FCMEN_ON_1H; 
 code char at __CONFIG2L config2l = 0xFF & _PUT_ON_2L & _BODEN_ON_2L & _BODENV_2_7V_2L;
 code char at __CONFIG2H config2h = 0xFF & _WDT_DISABLED_CONTROLLED_2H;
 code char at __CONFIG3H config3h = 0xFF & _MCLRE_MCLR_enabled_RA5_input_dis_3H;
@@ -41,9 +41,13 @@ code char at __CONFIG7H config7h = 0xFF & _EBTRB_OFF_7H;
 #pragma stack 0x80 0x40
 
 // Interupts, AKA signals.
+
+#define SIG_OSCFIF SIG_PIR(2),7 
+
 DEF_INTHIGH(high_int)
 	
 DEF_HANDLER(SIG_TMR0,_tmr0_handler)
+DEF_HANDLER(SIG_OSCFIF,_oscfif_handler)
 
 END_DEF
 
@@ -61,6 +65,20 @@ SIGHANDLER(_tmr0_handler)
   INTCONbits.T0IF = 0;
 }
 
+SIGHANDLER(_oscfif_handler)
+
+{
+  // Save the lower three bytes of the counter to the eeprom
+  save_counter(0,3);
+
+  // Wait, this should ensure that the power has failed fully, or has come
+  // back, without excessive writes to the eeprom.
+  delay10ktcy(1);
+
+  // Reset, nothing we can do.
+  Reset();
+}
+
 void main(){
   // Initialization
 
@@ -75,7 +93,11 @@ void main(){
   //init_eeprom();
   //init_time();
   //init_user();
-  
+
+  // Enable the clock oscillator fail interrupt
+  PIE2bits.OSCFIE = 1;
+  INTCONbits.PEIE = 1;
+
   // Setup pwm and adc for the led brightness control
   TRISAbits.TRISA0 = 1;
   ADCON0 = b(00000001);

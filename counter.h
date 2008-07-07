@@ -24,6 +24,8 @@ void init_counter();
 
 void inc_counter();
 
+void save_counter(uint8_t start,uint8_t end);
+
 // Local Variables:
 // mode: C
 // fill-column: 76

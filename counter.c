@@ -23,10 +23,36 @@
 uint8_t count[6];
 
 void init_counter(){
-  uint8_t i;
+  // Load from eeprom
+  for (EEADR = 0; EEADR < sizeof(count); EEADR++){
+    EECON1bits.EEPGD = 0;
+    EECON1bits.CFGS = 0;
+    EECON1bits.RD = 1;
+    count[EEADR] = EEDATA;
+  }
+}
 
-  for (i = 0; i < sizeof(count); i++){
-    count[i] = 0; 
+void save_counter(uint8_t start,uint8_t end){
+  uint8_t i;
+  for (i = start; i < end; i++){
+    EEADR = i; 
+
+    EEDATA = count[EEADR];
+
+    EECON1bits.EEPGD = 0;
+    EECON1bits.CFGS = 0;
+    EECON1bits.WREN = 1;
+
+    // critical bit here
+    _asm 
+      movlw 0x55
+      movwf _EECON2
+      movlw 0xAA
+      movwf _EECON2
+      bsf _EECON1,1 
+    _endasm;
+
+    while (EECON1bits.WR); // wait for write to finish
   }
 }
 
@@ -65,6 +91,11 @@ void inc_counter(){
     count[i]++;
 
     if (count[i]) break;
+  }
+
+  // Save the whole eeprom every 4.764 hours.  
+  if (i > 2){
+    save_counter(0,sizeof(count));
   }
 
   display_counter();
