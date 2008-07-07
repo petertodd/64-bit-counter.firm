@@ -44,6 +44,21 @@ code char at __CONFIG7H config7h = 0xFF & _EBTRB_OFF_7H;
 
 #define SIG_OSCFIF SIG_PIR(2),7 
 
+// Returns a random number after permutating the LFSR seed.
+uint8_t rand_seed = 1;
+uint8_t rand(){
+  __asm
+    BANKSEL _rand_seed
+    BCF     STATUS,0
+    RRCF    _rand_seed,W
+    BTFSC   STATUS,0
+    XORLW   0xB4
+    MOVWF   _rand_seed
+  _endasm;
+
+  return  rand_seed;
+}
+
 DEF_INTHIGH(high_int)
 	
 DEF_HANDLER(SIG_TMR0,_tmr0_handler)
@@ -60,6 +75,9 @@ SIGHANDLER(_tmr0_handler)
   ADCON0bits.GO = 1;
   while (ADCON0bits.GO);
   CCPR1L = ADRESH;
+
+  // Add to the random "pool"
+  rand_seed ^= ADRESH;
 
   // Re-enable ourselves.
   INTCONbits.T0IF = 0;
@@ -123,6 +141,8 @@ void main(){
   T0CON = b(11000010); 
 
   while (1){
+    // Dither the PWM timebase to avoid beat frequencies.
+    TMR2 -= rand() & b(00000001);
   }
 }
 
