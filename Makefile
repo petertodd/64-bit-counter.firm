@@ -52,6 +52,12 @@ combined.hex: all init_eeprom.dat
 burn: combined.hex
 	pk2 -progress -write combined.hex
 
+rapture.hex: all rapture_eeprom.dat
+	srec_cat $(OUTPUT_HEX) -Intel rapture_eeprom.dat -Intel -ignore-checksums -Output -Intel > rapture.hex
+
+rapture: rapture.hex
+	pk2 -progress -write rapture.hex
+
 burned/combined.hex: combined.hex 
 	mkdir burned
 	cp *.cod *.cof *.hex *.lst burned/
