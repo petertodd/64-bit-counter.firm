@@ -1,0 +1,907 @@
+gplink-0.13.4 alpha
+Copyright (c) 1998-2005 gputils project
+Listing File Generated: 7-7-2008  20:41:42
+ 
+ 
+Address  Value    Disassembly              Source
+-------  -----    -----------              ------
+                                           ;--------------------------------------------------------
+                                           ; File Created by SDCC : FreeWare ANSI-C Compiler
+                                           ; Version 2.6.0 #4309 (Sep 23 2007)
+                                           ; This file generated Mon Jul  7 20:41:42 2008
+                                           ;--------------------------------------------------------
+                                           ; PIC16 port for the Microchip 16-bit core micros
+                                           ;--------------------------------------------------------
+                                           	list	p=18f1320
+                                           
+                                           	radix dec
+                                           
+                                           ;--------------------------------------------------------
+                                           ; public variables in this module
+                                           ;--------------------------------------------------------
+                                           	global _init_counter
+                                           	global _save_counter
+                                           	global _inc_counter
+                                           	global _count
+                                           	global _display_counter
+                                           
+                                           ;--------------------------------------------------------
+                                           ; extern variables in this module
+                                           ;--------------------------------------------------------
+                                           	extern _PORTAbits
+                                           	extern _PORTBbits
+                                           	extern _LATAbits
+                                           	extern _LATBbits
+                                           	extern _TRISAbits
+                                           	extern _TRISBbits
+                                           	extern _PIE1bits
+                                           	extern _PIR1bits
+                                           	extern _IPR1bits
+                                           	extern _PIE2bits
+                                           	extern _PIR2bits
+                                           	extern _IPR2bits
+                                           	extern _EECON1bits
+                                           	extern _RCSTAbits
+                                           	extern _TXSTAbits
+                                           	extern _T3CONbits
+                                           	extern _ECCPASbits
+                                           	extern _CCP1CONbits
+                                           	extern _ADCON2bits
+                                           	extern _ADCON1bits
+                                           	extern _ADCON0bits
+                                           	extern _T2CONbits
+                                           	extern _T1CONbits
+                                           	extern _RCONbits
+                                           	extern _WDTCONbits
+                                           	extern _LVDCONbits
+                                           	extern _OSCCONbits
+                                           	extern _STATUSbits
+                                           	extern _INTCON3bits
+                                           	extern _INTCON2bits
+                                           	extern _INTCONbits
+                                           	extern _STKPTRbits
+                                           	extern _PORTA
+                                           	extern _PORTB
+                                           	extern _LATA
+                                           	extern _LATB
+                                           	extern _TRISA
+                                           	extern _TRISB
+                                           	extern _PIE1
+                                           	extern _PIR1
+                                           	extern _IPR1
+                                           	extern _PIE2
+                                           	extern _PIR2
+                                           	extern _IPR2
+                                           	extern _EECON1
+                                           	extern _EECON2
+                                           	extern _EEDATA
+                                           	extern _EEADR
+                                           	extern _BAUDCTL
+                                           	extern _RCSTA
+                                           	extern _TXSTA
+                                           	extern _TXREG
+                                           	extern _RCREG
+                                           	extern _SPBRG
+                                           	extern _SPBRGH
+                                           	extern _T3CON
+                                           	extern _TMR3L
+                                           	extern _TMR3H
+                                           	extern _ECCPAS
+                                           	extern _CCP1CON
+                                           	extern _CCPR1L
+                                           	extern _CCPR1H
+                                           	extern _ADCON2
+                                           	extern _ADCON1
+                                           	extern _ADCON0
+                                           	extern _ADRESL
+                                           	extern _ADRESH
+                                           	extern _T2CON
+                                           	extern _PR2
+                                           	extern _TMR2
+                                           	extern _T1CON
+                                           	extern _TMR1L
+                                           	extern _TMR1H
+                                           	extern _RCON
+                                           	extern _WDTCON
+                                           	extern _LVDCON
+                                           	extern _OSCCON
+                                           	extern _T0CON
+                                           	extern _TMR0L
+                                           	extern _TMR0H
+                                           	extern _STATUS
+                                           	extern _FSR2L
+                                           	extern _FSR2H
+                                           	extern _PLUSW2
+                                           	extern _PREINC2
+                                           	extern _POSTDEC2
+                                           	extern _POSTINC2
+                                           	extern _INDF2
+                                           	extern _BSR
+                                           	extern _FSR1L
+                                           	extern _FSR1H
+                                           	extern _PLUSW1
+                                           	extern _PREINC1
+                                           	extern _POSTDEC1
+                                           	extern _POSTINC1
+                                           	extern _INDF1
+                                           	extern _WREG
+                                           	extern _FSR0L
+                                           	extern _FSR0H
+                                           	extern _PLUSW0
+                                           	extern _PREINC0
+                                           	extern _POSTDEC0
+                                           	extern _POSTINC0
+                                           	extern _INDF0
+                                           	extern _INTCON3
+                                           	extern _INTCON2
+                                           	extern _INTCON
+                                           	extern _PRODL
+                                           	extern _PRODH
+                                           	extern _TABLAT
+                                           	extern _TBLPTRL
+                                           	extern _TBLPTRH
+                                           	extern _TBLPTRU
+                                           	extern _PCL
+                                           	extern _PCLATH
+                                           	extern _PCLATU
+                                           	extern _STKPTR
+                                           	extern _TOSL
+                                           	extern _TOSH
+                                           	extern _TOSU
+                                           	extern _delay10tcy
+                                           ;--------------------------------------------------------
+                                           ;	Equates to used internal registers
+                                           ;--------------------------------------------------------
+                                           STATUS	equ	0xfd8
+                                           FSR0L	equ	0xfe9
+                                           FSR0H	equ	0xfea
+                                           FSR1L	equ	0xfe1
+                                           FSR2L	equ	0xfd9
+                                           INDF0	equ	0xfef
+                                           POSTDEC1	equ	0xfe5
+                                           PREINC1	equ	0xfe4
+                                           PLUSW2	equ	0xfdb
+                                           
+                                           
+                                           ; Internal registers
+                                           .registers	udata_ovr	0x0000
+                                           r0x00	res	1
+                                           r0x01	res	1
+                                           r0x02	res	1
+                                           r0x03	res	1
+                                           
+                                           udata_counter_0	udata
+                                           _count	res	6
+                                           
+                                           ;--------------------------------------------------------
+                                           ; global & static initialisations
+                                           ;--------------------------------------------------------
+                                           ; I code from now on!
+                                           ; ; Starting pCode block
+                                           S_counter__inc_counter	code
+                                           _inc_counter:
+                                           ;	.line	87; counter.c	void inc_counter(){
+000244   c000     movff	0, 0xfe5           	MOVFF	r0x00, POSTDEC1
+000246   ffe5
+000248   c001     movff	0x1, 0xfe5         	MOVFF	r0x01, POSTDEC1
+00024a   ffe5
+00024c   c002     movff	0x2, 0xfe5         	MOVFF	r0x02, POSTDEC1
+00024e   ffe5
+000250   c003     movff	0x3, 0xfe5         	MOVFF	r0x03, POSTDEC1
+000252   ffe5
+                                           ;	.line	90; counter.c	for (i = 0; i < sizeof(count); i++){
+000254   6a00     clrf	0, 0                	CLRF	r0x00
+                                           _00140_DS_:
+000256   0e06     movlw	0x6                	MOVLW	0x06
+000258   5c00     subwf	0, 0, 0            	SUBWF	r0x00, W
+00025a   e217     bc	0x28a                 	BC	_00143_DS_
+                                           ;	.line	91; counter.c	count[i]++;
+00025c   0ec0     movlw	0xc0               	MOVLW	LOW(_count)
+00025e   2400     addwf	0, 0, 0            	ADDWF	r0x00, W
+000260   6e01     movwf	0x1, 0             	MOVWF	r0x01
+000262   6a02     clrf	0x2, 0              	CLRF	r0x02
+000264   0e00     movlw	0                  	MOVLW	HIGH(_count)
+000266   2202     addwfc	0x2, 0x1, 0       	ADDWFC	r0x02, F
+000268   c001     movff	0x1, 0xfe9         	MOVFF	r0x01, FSR0L
+00026a   ffe9
+00026c   c002     movff	0x2, 0xfea         	MOVFF	r0x02, FSR0H
+00026e   ffea
+000270   cfef     movff	0xfef, 0x3         	MOVFF	INDF0, r0x03
+000272   f003
+000274   2a03     incf	0x3, 0x1, 0         	INCF	r0x03, F
+000276   c001     movff	0x1, 0xfe9         	MOVFF	r0x01, FSR0L
+000278   ffe9
+00027a   c002     movff	0x2, 0xfea         	MOVFF	r0x02, FSR0H
+00027c   ffea
+00027e   c003     movff	0x3, 0xfef         	MOVFF	r0x03, INDF0
+000280   ffef
+                                           ;	.line	93; counter.c	if (count[i]) break;
+000282   5003     movf	0x3, 0, 0           	MOVF	r0x03, W
+000284   e102     bnz	0x28a                	BNZ	_00143_DS_
+                                           ;	.line	90; counter.c	for (i = 0; i < sizeof(count); i++){
+000286   2a00     incf	0, 0x1, 0           	INCF	r0x00, F
+000288   d7e6     bra	0x256                	BRA	_00140_DS_
+                                           _00143_DS_:
+                                           ;	.line	97; counter.c	if (i > 2){
+00028a   0e03     movlw	0x3                	MOVLW	0x03
+00028c   5c00     subwf	0, 0, 0            	SUBWF	r0x00, W
+00028e   e308     bnc	0x2a0                	BNC	_00145_DS_
+                                           ;	.line	98; counter.c	save_counter(0,sizeof(count));
+000290   0e06     movlw	0x6                	MOVLW	0x06
+000292   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+000294   0e00     movlw	0                  	MOVLW	0x00
+000296   6ae5     clrf	0xe5, 0             	CLRF	POSTDEC1
+000298   ece8     call	0x1d0, 0            	CALL	_save_counter
+00029a   f000
+00029c   0e02     movlw	0x2                	MOVLW	0x02
+00029e   26e1     addwf	0xe1, 0x1, 0       	ADDWF	FSR1L, F
+                                           _00145_DS_:
+                                           ;	.line	101; counter.c	display_counter();
+0002a0   ecac     call	0x158, 0            	CALL	_display_counter
+0002a2   f000
+0002a4   cfe4     movff	0xfe4, 0x3         	MOVFF	PREINC1, r0x03
+0002a6   f003
+0002a8   cfe4     movff	0xfe4, 0x2         	MOVFF	PREINC1, r0x02
+0002aa   f002
+0002ac   cfe4     movff	0xfe4, 0x1         	MOVFF	PREINC1, r0x01
+0002ae   f001
+0002b0   cfe4     movff	0xfe4, 0           	MOVFF	PREINC1, r0x00
+0002b2   f000
+0002b4   0012     return	0                 	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_counter__display_counter	code
+                                           _display_counter:
+                                           ;	.line	64; counter.c	void display_counter(){
+000158   c000     movff	0, 0xfe5           	MOVFF	r0x00, POSTDEC1
+00015a   ffe5
+00015c   c001     movff	0x1, 0xfe5         	MOVFF	r0x01, POSTDEC1
+00015e   ffe5
+000160   c002     movff	0x2, 0xfe5         	MOVFF	r0x02, POSTDEC1
+000162   ffe5
+                                           ;	.line	67; counter.c	for (i = 0; i < sizeof(count); i++){
+000164   6a00     clrf	0, 0                	CLRF	r0x00
+                                           _00129_DS_:
+000166   0e06     movlw	0x6                	MOVLW	0x06
+000168   5c00     subwf	0, 0, 0            	SUBWF	r0x00, W
+00016a   e22b     bc	0x1c2                 	BC	_00133_DS_
+                                           ;	.line	69; counter.c	clear_latches();
+00016c   0ef1     movlw	0xf1               	MOVLW	0xf1
+00016e   1489     andwf	0x89, 0, 0         	ANDWF	_LATA, W
+000170   6e01     movwf	0x1, 0             	MOVWF	r0x01
+000172   0e0c     movlw	0xc                	MOVLW	0x0c
+000174   1001     iorwf	0x1, 0, 0          	IORWF	r0x01, W
+000176   6e89     movwf	0x89, 0            	MOVWF	_LATA
+                                           ;	.line	70; counter.c	delay10tcy(1);
+000178   0e01     movlw	0x1                	MOVLW	0x01
+00017a   ec5b     call	0x2b6, 0            	CALL	_delay10tcy
+00017c   f001
+                                           ;	.line	73; counter.c	LATB = count[i];
+00017e   0ec0     movlw	0xc0               	MOVLW	LOW(_count)
+000180   2400     addwf	0, 0, 0            	ADDWF	r0x00, W
+000182   6e01     movwf	0x1, 0             	MOVWF	r0x01
+000184   6a02     clrf	0x2, 0              	CLRF	r0x02
+000186   0e00     movlw	0                  	MOVLW	HIGH(_count)
+000188   2202     addwfc	0x2, 0x1, 0       	ADDWFC	r0x02, F
+00018a   c001     movff	0x1, 0xfe9         	MOVFF	r0x01, FSR0L
+00018c   ffe9
+00018e   c002     movff	0x2, 0xfea         	MOVFF	r0x02, FSR0H
+000190   ffea
+000192   cfef     movff	0xfef, 0x1         	MOVFF	INDF0, r0x01
+000194   f001
+000196   c001     movff	0x1, 0xf8a         	MOVFF	r0x01, _LATB
+000198   ff8a
+                                           ;	.line	74; counter.c	if (count[i] & b(00001000)){
+00019a   a601     btfss	0x1, 0x3, 0        	BTFSS	r0x01, 3
+00019c   d002     bra	0x1a2                	BRA	_00127_DS_
+                                           ;	.line	75; counter.c	LATAbits.LATA6 = 1;
+00019e   8c89     bsf	0x89, 0x6, 0         	BSF	_LATAbits, 6
+0001a0   d001     bra	0x1a4                	BRA	_00128_DS_
+                                           _00127_DS_:
+                                           ;	.line	77; counter.c	LATAbits.LATA6 = 0;
+0001a2   9c89     bcf	0x89, 0x6, 0         	BCF	_LATAbits, 6
+                                           _00128_DS_:
+                                           ;	.line	81; counter.c	delay10tcy(1);
+0001a4   0e01     movlw	0x1                	MOVLW	0x01
+0001a6   ec5b     call	0x2b6, 0            	CALL	_delay10tcy
+0001a8   f001
+                                           ;	.line	82; counter.c	select_byte(i);
+0001aa   0ef1     movlw	0xf1               	MOVLW	0xf1
+0001ac   1489     andwf	0x89, 0, 0         	ANDWF	_LATA, W
+0001ae   6e01     movwf	0x1, 0             	MOVWF	r0x01
+0001b0   5000     movf	0, 0, 0             	MOVF	r0x00, W
+0001b2   2400     addwf	0, 0, 0            	ADDWF	r0x00, W
+0001b4   1001     iorwf	0x1, 0, 0          	IORWF	r0x01, W
+0001b6   6e89     movwf	0x89, 0            	MOVWF	_LATA
+                                           ;	.line	83; counter.c	delay10tcy(1);
+0001b8   0e01     movlw	0x1                	MOVLW	0x01
+0001ba   ec5b     call	0x2b6, 0            	CALL	_delay10tcy
+0001bc   f001
+                                           ;	.line	67; counter.c	for (i = 0; i < sizeof(count); i++){
+0001be   2a00     incf	0, 0x1, 0           	INCF	r0x00, F
+0001c0   d7d2     bra	0x166                	BRA	_00129_DS_
+                                           _00133_DS_:
+0001c2   cfe4     movff	0xfe4, 0x2         	MOVFF	PREINC1, r0x02
+0001c4   f002
+0001c6   cfe4     movff	0xfe4, 0x1         	MOVFF	PREINC1, r0x01
+0001c8   f001
+0001ca   cfe4     movff	0xfe4, 0           	MOVFF	PREINC1, r0x00
+0001cc   f000
+0001ce   0012     return	0                 	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_counter__save_counter	code
+                                           _save_counter:
+                                           ;	.line	35; counter.c	void save_counter(uint8_t start,uint8_t end){
+0001d0   cfd9     movff	0xfd9, 0xfe5       	MOVFF	FSR2L, POSTDEC1
+0001d2   ffe5
+0001d4   cfe1     movff	0xfe1, 0xfd9       	MOVFF	FSR1L, FSR2L
+0001d6   ffd9
+0001d8   c000     movff	0, 0xfe5           	MOVFF	r0x00, POSTDEC1
+0001da   ffe5
+0001dc   c001     movff	0x1, 0xfe5         	MOVFF	r0x01, POSTDEC1
+0001de   ffe5
+0001e0   c002     movff	0x2, 0xfe5         	MOVFF	r0x02, POSTDEC1
+0001e2   ffe5
+0001e4   c003     movff	0x3, 0xfe5         	MOVFF	r0x03, POSTDEC1
+0001e6   ffe5
+0001e8   0e02     movlw	0x2                	MOVLW	0x02
+0001ea   cfdb     movff	0xfdb, 0           	MOVFF	PLUSW2, r0x00
+0001ec   f000
+0001ee   0e03     movlw	0x3                	MOVLW	0x03
+0001f0   cfdb     movff	0xfdb, 0x1         	MOVFF	PLUSW2, r0x01
+0001f2   f001
+                                           _00117_DS_:
+                                           ;	.line	37; counter.c	for (i = start; i < end; i++){
+0001f4   5001     movf	0x1, 0, 0           	MOVF	r0x01, W
+0001f6   5c00     subwf	0, 0, 0            	SUBWF	r0x00, W
+0001f8   e21a     bc	0x22e                 	BC	_00121_DS_
+                                           ;	.line	38; counter.c	EEADR = i; 
+0001fa   c000     movff	0, 0xfa9           	MOVFF	r0x00, _EEADR
+0001fc   ffa9
+                                           ;	.line	40; counter.c	EEDATA = count[EEADR];
+0001fe   0ec0     movlw	0xc0               	MOVLW	LOW(_count)
+000200   24a9     addwf	0xa9, 0, 0         	ADDWF	_EEADR, W
+000202   6e02     movwf	0x2, 0             	MOVWF	r0x02
+000204   6a03     clrf	0x3, 0              	CLRF	r0x03
+000206   0e00     movlw	0                  	MOVLW	HIGH(_count)
+000208   2203     addwfc	0x3, 0x1, 0       	ADDWFC	r0x03, F
+00020a   c002     movff	0x2, 0xfe9         	MOVFF	r0x02, FSR0L
+00020c   ffe9
+00020e   c003     movff	0x3, 0xfea         	MOVFF	r0x03, FSR0H
+000210   ffea
+000212   cfef     movff	0xfef, 0xfa8       	MOVFF	INDF0, _EEDATA
+000214   ffa8
+                                           ;	.line	42; counter.c	EECON1bits.EEPGD = 0;
+000216   9ea6     bcf	0xa6, 0x7, 0         	BCF	_EECON1bits, 7
+                                           ;	.line	43; counter.c	EECON1bits.CFGS = 0;
+000218   9ca6     bcf	0xa6, 0x6, 0         	BCF	_EECON1bits, 6
+                                           ;	.line	44; counter.c	EECON1bits.WREN = 1;
+00021a   84a6     bsf	0xa6, 0x2, 0         	BSF	_EECON1bits, 2
+00021c   0e55     movlw	0x55               	movlw 0x55
+00021e   6ea7     movwf	0xa7, 0            	movwf _EECON2
+000220   0eaa     movlw	0xaa               	movlw 0xAA
+000222   6ea7     movwf	0xa7, 0            	movwf _EECON2
+000224   82a6     bsf	0xa6, 0x1, 0         	bsf _EECON1,1
+                                           	
+                                           _00114_DS_:
+                                           ;	.line	55; counter.c	while (EECON1bits.WR); // wait for write to finish
+000226   b2a6     btfsc	0xa6, 0x1, 0       	BTFSC	_EECON1bits, 1
+000228   d7fe     bra	0x226                	BRA	_00114_DS_
+                                           ;	.line	37; counter.c	for (i = start; i < end; i++){
+00022a   2a00     incf	0, 0x1, 0           	INCF	r0x00, F
+00022c   d7e3     bra	0x1f4                	BRA	_00117_DS_
+                                           _00121_DS_:
+00022e   cfe4     movff	0xfe4, 0x3         	MOVFF	PREINC1, r0x03
+000230   f003
+000232   cfe4     movff	0xfe4, 0x2         	MOVFF	PREINC1, r0x02
+000234   f002
+000236   cfe4     movff	0xfe4, 0x1         	MOVFF	PREINC1, r0x01
+000238   f001
+00023a   cfe4     movff	0xfe4, 0           	MOVFF	PREINC1, r0x00
+00023c   f000
+00023e   cfe4     movff	0xfe4, 0xfd9       	MOVFF	PREINC1, FSR2L
+000240   ffd9
+000242   0012     return	0                 	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_counter__init_counter	code
+                                           _init_counter:
+                                           ;	.line	25; counter.c	void init_counter(){
+0003ca   c000     movff	0, 0xfe5           	MOVFF	r0x00, POSTDEC1
+0003cc   ffe5
+0003ce   c001     movff	0x1, 0xfe5         	MOVFF	r0x01, POSTDEC1
+0003d0   ffe5
+                                           ;	.line	27; counter.c	for (EEADR = 0; EEADR < sizeof(count); EEADR++){
+0003d2   6aa9     clrf	0xa9, 0             	CLRF	_EEADR
+                                           _00105_DS_:
+0003d4   0e06     movlw	0x6                	MOVLW	0x06
+0003d6   5ca9     subwf	0xa9, 0, 0         	SUBWF	_EEADR, W
+0003d8   e211     bc	0x3fc                 	BC	_00109_DS_
+                                           ;	.line	28; counter.c	EECON1bits.EEPGD = 0;
+0003da   9ea6     bcf	0xa6, 0x7, 0         	BCF	_EECON1bits, 7
+                                           ;	.line	29; counter.c	EECON1bits.CFGS = 0;
+0003dc   9ca6     bcf	0xa6, 0x6, 0         	BCF	_EECON1bits, 6
+                                           ;	.line	30; counter.c	EECON1bits.RD = 1;
+0003de   80a6     bsf	0xa6, 0, 0           	BSF	_EECON1bits, 0
+                                           ;	.line	31; counter.c	count[EEADR] = EEDATA;
+0003e0   0ec0     movlw	0xc0               	MOVLW	LOW(_count)
+0003e2   24a9     addwf	0xa9, 0, 0         	ADDWF	_EEADR, W
+0003e4   6e00     movwf	0, 0               	MOVWF	r0x00
+0003e6   6a01     clrf	0x1, 0              	CLRF	r0x01
+0003e8   0e00     movlw	0                  	MOVLW	HIGH(_count)
+0003ea   2201     addwfc	0x1, 0x1, 0       	ADDWFC	r0x01, F
+0003ec   c000     movff	0, 0xfe9           	MOVFF	r0x00, FSR0L
+0003ee   ffe9
+0003f0   c001     movff	0x1, 0xfea         	MOVFF	r0x01, FSR0H
+0003f2   ffea
+0003f4   cfa8     movff	0xfa8, 0xfef       	MOVFF	_EEDATA, INDF0
+0003f6   ffef
+                                           ;	.line	27; counter.c	for (EEADR = 0; EEADR < sizeof(count); EEADR++){
+0003f8   2aa9     incf	0xa9, 0x1, 0        	INCF	_EEADR, F
+0003fa   d7ec     bra	0x3d4                	BRA	_00105_DS_
+                                           _00109_DS_:
+0003fc   cfe4     movff	0xfe4, 0x1         	MOVFF	PREINC1, r0x01
+0003fe   f001
+000400   cfe4     movff	0xfe4, 0           	MOVFF	PREINC1, r0x00
+000402   f000
+000404   0012     return	0                 	RETURN	
+                                           
+                                           
+                                           
+                                           ; Statistics:
+                                           ; code size:	  412 (0x019c) bytes ( 0.31%)
+                                           ;           	  206 (0x00ce) words
+                                           ; udata size:	    6 (0x0006) bytes ( 9.38%)
+                                           ; access size:	    4 (0x0004) bytes
+                                           
+                                           
+                                           	end
+                                           ;--------------------------------------------------------
+                                           ; File Created by SDCC : FreeWare ANSI-C Compiler
+                                           ; Version 2.6.0 #4309 (Sep 23 2007)
+                                           ; This file generated Mon Jul  7 20:41:42 2008
+                                           ;--------------------------------------------------------
+                                           ; PIC16 port for the Microchip 16-bit core micros
+                                           ;--------------------------------------------------------
+                                           	list	p=18f1320
+                                           	__config 0x300001, 0xf7
+                                           	__config 0x300002, 0xfe
+                                           	__config 0x300003, 0xfe
+                                           	__config 0x300005, 0xff
+                                           	__config 0x300006, 0xfa
+                                           	__config 0x300008, 0xff
+                                           	__config 0x300009, 0xff
+                                           	__config 0x30000a, 0xff
+                                           	__config 0x30000b, 0xff
+                                           	__config 0x30000c, 0xff
+                                           	__config 0x30000d, 0xff
+                                           
+                                           	radix dec
+                                           
+                                           ;--------------------------------------------------------
+                                           ; public variables in this module
+                                           ;--------------------------------------------------------
+                                           	global _stack
+                                           	global _stack_end
+                                           	global _rand_seed
+                                           	global _rand
+                                           	global ___ivt_high_int
+                                           	global _high_int
+                                           	global __tmr0_handler
+                                           	global __oscfif_handler
+                                           	global _main
+                                           
+                                           ;--------------------------------------------------------
+                                           ; extern variables in this module
+                                           ;--------------------------------------------------------
+                                           	extern _PORTAbits
+                                           	extern _PORTBbits
+                                           	extern _LATAbits
+                                           	extern _LATBbits
+                                           	extern _TRISAbits
+                                           	extern _TRISBbits
+                                           	extern _PIE1bits
+                                           	extern _PIR1bits
+                                           	extern _IPR1bits
+                                           	extern _PIE2bits
+                                           	extern _PIR2bits
+                                           	extern _IPR2bits
+                                           	extern _EECON1bits
+                                           	extern _RCSTAbits
+                                           	extern _TXSTAbits
+                                           	extern _T3CONbits
+                                           	extern _ECCPASbits
+                                           	extern _CCP1CONbits
+                                           	extern _ADCON2bits
+                                           	extern _ADCON1bits
+                                           	extern _ADCON0bits
+                                           	extern _T2CONbits
+                                           	extern _T1CONbits
+                                           	extern _RCONbits
+                                           	extern _WDTCONbits
+                                           	extern _LVDCONbits
+                                           	extern _OSCCONbits
+                                           	extern _STATUSbits
+                                           	extern _INTCON3bits
+                                           	extern _INTCON2bits
+                                           	extern _INTCONbits
+                                           	extern _STKPTRbits
+                                           	extern _PORTA
+                                           	extern _PORTB
+                                           	extern _LATA
+                                           	extern _LATB
+                                           	extern _TRISA
+                                           	extern _TRISB
+                                           	extern _PIE1
+                                           	extern _PIR1
+                                           	extern _IPR1
+                                           	extern _PIE2
+                                           	extern _PIR2
+                                           	extern _IPR2
+                                           	extern _EECON1
+                                           	extern _EECON2
+                                           	extern _EEDATA
+                                           	extern _EEADR
+                                           	extern _BAUDCTL
+                                           	extern _RCSTA
+                                           	extern _TXSTA
+                                           	extern _TXREG
+                                           	extern _RCREG
+                                           	extern _SPBRG
+                                           	extern _SPBRGH
+                                           	extern _T3CON
+                                           	extern _TMR3L
+                                           	extern _TMR3H
+                                           	extern _ECCPAS
+                                           	extern _CCP1CON
+                                           	extern _CCPR1L
+                                           	extern _CCPR1H
+                                           	extern _ADCON2
+                                           	extern _ADCON1
+                                           	extern _ADCON0
+                                           	extern _ADRESL
+                                           	extern _ADRESH
+                                           	extern _T2CON
+                                           	extern _PR2
+                                           	extern _TMR2
+                                           	extern _T1CON
+                                           	extern _TMR1L
+                                           	extern _TMR1H
+                                           	extern _RCON
+                                           	extern _WDTCON
+                                           	extern _LVDCON
+                                           	extern _OSCCON
+                                           	extern _T0CON
+                                           	extern _TMR0L
+                                           	extern _TMR0H
+                                           	extern _STATUS
+                                           	extern _FSR2L
+                                           	extern _FSR2H
+                                           	extern _PLUSW2
+                                           	extern _PREINC2
+                                           	extern _POSTDEC2
+                                           	extern _POSTINC2
+                                           	extern _INDF2
+                                           	extern _BSR
+                                           	extern _FSR1L
+                                           	extern _FSR1H
+                                           	extern _PLUSW1
+                                           	extern _PREINC1
+                                           	extern _POSTDEC1
+                                           	extern _POSTINC1
+                                           	extern _INDF1
+                                           	extern _WREG
+                                           	extern _FSR0L
+                                           	extern _FSR0H
+                                           	extern _PLUSW0
+                                           	extern _PREINC0
+                                           	extern _POSTDEC0
+                                           	extern _POSTINC0
+                                           	extern _INDF0
+                                           	extern _INTCON3
+                                           	extern _INTCON2
+                                           	extern _INTCON
+                                           	extern _PRODL
+                                           	extern _PRODH
+                                           	extern _TABLAT
+                                           	extern _TBLPTRL
+                                           	extern _TBLPTRH
+                                           	extern _TBLPTRU
+                                           	extern _PCL
+                                           	extern _PCLATH
+                                           	extern _PCLATU
+                                           	extern _STKPTR
+                                           	extern _TOSL
+                                           	extern _TOSH
+                                           	extern _TOSU
+                                           	extern _delay10ktcy
+                                           	extern _init_counter
+                                           	extern _inc_counter
+                                           	extern _save_counter
+                                           ;--------------------------------------------------------
+                                           ;	Equates to used internal registers
+                                           ;--------------------------------------------------------
+                                           STATUS	equ	0xfd8
+                                           PCLATH	equ	0xffa
+                                           PCLATU	equ	0xffb
+                                           WREG	equ	0xfe8
+                                           BSR	equ	0xfe0
+                                           FSR0L	equ	0xfe9
+                                           FSR0H	equ	0xfea
+                                           FSR1L	equ	0xfe1
+                                           FSR2L	equ	0xfd9
+                                           POSTDEC1	equ	0xfe5
+                                           PREINC1	equ	0xfe4
+                                           PRODL	equ	0xff3
+                                           PRODH	equ	0xff4
+                                           
+                                           
+                                           	idata
+                                           _rand_seed	db	0x01
+                                           
+                                           
+                                           ; Internal registers
+                                           .registers	udata_ovr	0x0000
+                                           r0x00	res	1
+                                           
+                                           
+                                           ustat_main_00	udata	0X0080
+                                           _stack	res	63
+                                           _stack_end	res	1
+                                           
+                                           ;--------------------------------------------------------
+                                           ; interrupt vector 
+                                           ;--------------------------------------------------------
+                                           
+                                           ;--------------------------------------------------------
+                                           ; global & static initialisations
+                                           ;--------------------------------------------------------
+                                           ; ; Starting pCode block
+                                           S_main____ivt_high_int	code	0X000008
+                                           ___ivt_high_int:
+                                           	
+000008   ef1e     goto	0x43c               	goto _high_int 
+00000a   f002
+                                           	
+                                           ; ; Starting pCode block
+                                           S_main__high_int	code
+                                           _high_int:
+00043c   b4f2     btfsc	0xf2, 0x2, 0       	btfsc _INTCON, 2 
+00043e   ef93     goto	0x326               	goto __tmr0_handler
+000440   f001
+000442   bea1     btfsc	0xa1, 0x7, 0       	btfsc _PIR2,7 
+000444   ef65     goto	0xca                	goto __oscfif_handler
+000446   f000
+000448   0010     retfie	0                 	retfie 
+                                           	
+                                           ; ; Starting pCode block
+                                           S_main___tmr0_handler	code
+                                           __tmr0_handler:
+                                           ;	.line	69; main.c	SIGHANDLER(_tmr0_handler)
+000326   cfe8     movff	0xfe8, 0xfe5       	MOVFF	WREG, POSTDEC1
+000328   ffe5
+00032a   cfd8     movff	0xfd8, 0xfe5       	MOVFF	STATUS, POSTDEC1
+00032c   ffe5
+00032e   cfe0     movff	0xfe0, 0xfe5       	MOVFF	BSR, POSTDEC1
+000330   ffe5
+000332   cff3     movff	0xff3, 0xfe5       	MOVFF	PRODL, POSTDEC1
+000334   ffe5
+000336   cff4     movff	0xff4, 0xfe5       	MOVFF	PRODH, POSTDEC1
+000338   ffe5
+00033a   cfe9     movff	0xfe9, 0xfe5       	MOVFF	FSR0L, POSTDEC1
+00033c   ffe5
+00033e   cfea     movff	0xfea, 0xfe5       	MOVFF	FSR0H, POSTDEC1
+000340   ffe5
+000342   cffa     movff	0xffa, 0xfe5       	MOVFF	PCLATH, POSTDEC1
+000344   ffe5
+000346   cffb     movff	0xffb, 0xfe5       	MOVFF	PCLATU, POSTDEC1
+000348   ffe5
+                                           ;	.line	72; main.c	inc_counter();
+00034a   ec22     call	0x244, 0            	CALL	_inc_counter
+00034c   f001
+                                           ;	.line	75; main.c	ADCON0bits.GO = 1;
+00034e   82c2     bsf	0xc2, 0x1, 0         	BSF	_ADCON0bits, 1
+                                           _00117_DS_:
+                                           ;	.line	76; main.c	while (ADCON0bits.GO);
+000350   b2c2     btfsc	0xc2, 0x1, 0       	BTFSC	_ADCON0bits, 1
+000352   d7fe     bra	0x350                	BRA	_00117_DS_
+                                           ;	.line	77; main.c	CCPR1L = ADRESH;
+000354   cfc4     movff	0xfc4, 0xfbe       	MOVFF	_ADRESH, _CCPR1L
+000356   ffbe
+                                           ;	.line	80; main.c	rand_seed ^= ADRESH;
+000358   50c4     movf	0xc4, 0, 0          	MOVF	_ADRESH, W
+00035a   0100     movlb	0                  	BANKSEL	_rand_seed
+00035c   1bc6     xorwf	0xc6, 0x1, 0x1     	XORWF	_rand_seed, F, B
+                                           ;	.line	83; main.c	INTCONbits.T0IF = 0;
+00035e   94f2     bcf	0xf2, 0x2, 0         	BCF	_INTCONbits, 2
+000360   cfe4     movff	0xfe4, 0xffb       	MOVFF	PREINC1, PCLATU
+000362   fffb
+000364   cfe4     movff	0xfe4, 0xffa       	MOVFF	PREINC1, PCLATH
+000366   fffa
+000368   cfe4     movff	0xfe4, 0xfea       	MOVFF	PREINC1, FSR0H
+00036a   ffea
+00036c   cfe4     movff	0xfe4, 0xfe9       	MOVFF	PREINC1, FSR0L
+00036e   ffe9
+000370   cfe4     movff	0xfe4, 0xff4       	MOVFF	PREINC1, PRODH
+000372   fff4
+000374   cfe4     movff	0xfe4, 0xff3       	MOVFF	PREINC1, PRODL
+000376   fff3
+000378   cfe4     movff	0xfe4, 0xfe0       	MOVFF	PREINC1, BSR
+00037a   ffe0
+00037c   cfe4     movff	0xfe4, 0xfd8       	MOVFF	PREINC1, STATUS
+00037e   ffd8
+000380   cfe4     movff	0xfe4, 0xfe8       	MOVFF	PREINC1, WREG
+000382   ffe8
+000384   0010     retfie	0                 	RETFIE	
+                                           
+                                           ; ; Starting pCode block
+                                           S_main___oscfif_handler	code
+                                           __oscfif_handler:
+                                           ;	.line	86; main.c	SIGHANDLER(_oscfif_handler)
+0000ca   cfe8     movff	0xfe8, 0xfe5       	MOVFF	WREG, POSTDEC1
+0000cc   ffe5
+0000ce   cfd8     movff	0xfd8, 0xfe5       	MOVFF	STATUS, POSTDEC1
+0000d0   ffe5
+0000d2   cfe0     movff	0xfe0, 0xfe5       	MOVFF	BSR, POSTDEC1
+0000d4   ffe5
+0000d6   cff3     movff	0xff3, 0xfe5       	MOVFF	PRODL, POSTDEC1
+0000d8   ffe5
+0000da   cff4     movff	0xff4, 0xfe5       	MOVFF	PRODH, POSTDEC1
+0000dc   ffe5
+0000de   cfe9     movff	0xfe9, 0xfe5       	MOVFF	FSR0L, POSTDEC1
+0000e0   ffe5
+0000e2   cfea     movff	0xfea, 0xfe5       	MOVFF	FSR0H, POSTDEC1
+0000e4   ffe5
+0000e6   cffa     movff	0xffa, 0xfe5       	MOVFF	PCLATH, POSTDEC1
+0000e8   ffe5
+0000ea   cffb     movff	0xffb, 0xfe5       	MOVFF	PCLATU, POSTDEC1
+0000ec   ffe5
+0000ee   cfd9     movff	0xfd9, 0xfe5       	MOVFF	FSR2L, POSTDEC1
+0000f0   ffe5
+0000f2   cfe1     movff	0xfe1, 0xfd9       	MOVFF	FSR1L, FSR2L
+0000f4   ffd9
+                                           ;	.line	91; main.c	save_counter(2,3);
+0000f6   0e03     movlw	0x3                	MOVLW	0x03
+0000f8   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+0000fa   0e02     movlw	0x2                	MOVLW	0x02
+0000fc   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+0000fe   ece8     call	0x1d0, 0            	CALL	_save_counter
+000100   f000
+000102   0e02     movlw	0x2                	MOVLW	0x02
+000104   26e1     addwf	0xe1, 0x1, 0       	ADDWF	FSR1L, F
+                                           ;	.line	92; main.c	save_counter(1,2);
+000106   0e02     movlw	0x2                	MOVLW	0x02
+000108   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+00010a   0e01     movlw	0x1                	MOVLW	0x01
+00010c   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+00010e   ece8     call	0x1d0, 0            	CALL	_save_counter
+000110   f000
+000112   0e02     movlw	0x2                	MOVLW	0x02
+000114   26e1     addwf	0xe1, 0x1, 0       	ADDWF	FSR1L, F
+                                           ;	.line	93; main.c	save_counter(0,1);
+000116   0e01     movlw	0x1                	MOVLW	0x01
+000118   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+00011a   0e00     movlw	0                  	MOVLW	0x00
+00011c   6ee5     movwf	0xe5, 0            	MOVWF	POSTDEC1
+00011e   ece8     call	0x1d0, 0            	CALL	_save_counter
+000120   f000
+000122   0e02     movlw	0x2                	MOVLW	0x02
+000124   26e1     addwf	0xe1, 0x1, 0       	ADDWF	FSR1L, F
+                                           ;	.line	97; main.c	delay10ktcy(1);
+000126   0e01     movlw	0x1                	MOVLW	0x01
+000128   ec67     call	0x2ce, 0            	CALL	_delay10ktcy
+00012a   f001
+00012c   00ff     reset                    	reset 
+00012e   cfe4     movff	0xfe4, 0xfd9       	MOVFF	PREINC1, FSR2L
+000130   ffd9
+000132   cfe4     movff	0xfe4, 0xffb       	MOVFF	PREINC1, PCLATU
+000134   fffb
+000136   cfe4     movff	0xfe4, 0xffa       	MOVFF	PREINC1, PCLATH
+000138   fffa
+00013a   cfe4     movff	0xfe4, 0xfea       	MOVFF	PREINC1, FSR0H
+00013c   ffea
+00013e   cfe4     movff	0xfe4, 0xfe9       	MOVFF	PREINC1, FSR0L
+000140   ffe9
+000142   cfe4     movff	0xfe4, 0xff4       	MOVFF	PREINC1, PRODH
+000144   fff4
+000146   cfe4     movff	0xfe4, 0xff3       	MOVFF	PREINC1, PRODL
+000148   fff3
+00014a   cfe4     movff	0xfe4, 0xfe0       	MOVFF	PREINC1, BSR
+00014c   ffe0
+00014e   cfe4     movff	0xfe4, 0xfd8       	MOVFF	PREINC1, STATUS
+000150   ffd8
+000152   cfe4     movff	0xfe4, 0xfe8       	MOVFF	PREINC1, WREG
+000154   ffe8
+000156   0010     retfie	0                 	RETFIE	
+                                           
+                                           ; I code from now on!
+                                           ; ; Starting pCode block
+                                           S_main__main	code
+                                           _main:
+                                           ;	.line	109; main.c	TRISA = 0x00;
+000386   6a92     clrf	0x92, 0             	CLRF	_TRISA
+                                           ;	.line	110; main.c	TRISB = 0x00;
+000388   6a93     clrf	0x93, 0             	CLRF	_TRISB
+                                           ;	.line	113; main.c	init_counter();
+00038a   ece5     call	0x3ca, 0            	CALL	_init_counter
+00038c   f001
+                                           ;	.line	119; main.c	PIE2bits.OSCFIE = 1;
+00038e   8ea0     bsf	0xa0, 0x7, 0         	BSF	_PIE2bits, 7
+                                           ;	.line	120; main.c	INTCONbits.PEIE = 1;
+000390   8cf2     bsf	0xf2, 0x6, 0         	BSF	_INTCONbits, 6
+                                           ;	.line	123; main.c	TRISAbits.TRISA0 = 1;
+000392   8092     bsf	0x92, 0, 0           	BSF	_TRISAbits, 0
+                                           ;	.line	124; main.c	ADCON0 = b(00000001);
+000394   0e01     movlw	0x1                	MOVLW	0x01
+000396   6ec2     movwf	0xc2, 0            	MOVWF	_ADCON0
+                                           ;	.line	125; main.c	ADCON1 = b(01111110);
+000398   0e7e     movlw	0x7e               	MOVLW	0x7e
+00039a   6ec1     movwf	0xc1, 0            	MOVWF	_ADCON1
+                                           ;	.line	126; main.c	ADCON2 = b(00000110);
+00039c   0e06     movlw	0x6                	MOVLW	0x06
+00039e   6ec0     movwf	0xc0, 0            	MOVWF	_ADCON2
+                                           ;	.line	128; main.c	CCP1CON = b(00001100);
+0003a0   0e0c     movlw	0xc                	MOVLW	0x0c
+0003a2   6ebd     movwf	0xbd, 0            	MOVWF	_CCP1CON
+                                           ;	.line	129; main.c	PR2 = 0xFF;
+0003a4   68cb     setf	0xcb, 0             	SETF	_PR2
+                                           ;	.line	130; main.c	T2CON = b(00000100);
+0003a6   0e04     movlw	0x4                	MOVLW	0x04
+0003a8   6eca     movwf	0xca, 0            	MOVWF	_T2CON
+                                           ;	.line	131; main.c	CCPR1L = 0x10;
+0003aa   0e10     movlw	0x10               	MOVLW	0x10
+0003ac   6ebe     movwf	0xbe, 0            	MOVWF	_CCPR1L
+                                           ;	.line	141; main.c	INTCONbits.T0IF = 0;
+0003ae   94f2     bcf	0xf2, 0x2, 0         	BCF	_INTCONbits, 2
+                                           ;	.line	142; main.c	INTCONbits.T0IE = 1;
+0003b0   8af2     bsf	0xf2, 0x5, 0         	BSF	_INTCONbits, 5
+                                           ;	.line	143; main.c	INTCONbits.GIE = 1;
+0003b2   8ef2     bsf	0xf2, 0x7, 0         	BSF	_INTCONbits, 7
+                                           ;	.line	144; main.c	T0CON = b(11000010); 
+0003b4   0ec2     movlw	0xc2               	MOVLW	0xc2
+0003b6   6ed5     movwf	0xd5, 0            	MOVWF	_T0CON
+                                           _00127_DS_:
+                                           ;	.line	148; main.c	TMR2 -= rand() & b(00000001);
+0003b8   ec03     call	0x406, 0            	CALL	_rand
+0003ba   f002
+0003bc   6e00     movwf	0, 0               	MOVWF	r0x00
+0003be   0e01     movlw	0x1                	MOVLW	0x01
+0003c0   1600     andwf	0, 0x1, 0          	ANDWF	r0x00, F
+0003c2   5000     movf	0, 0, 0             	MOVF	r0x00, W
+0003c4   5ecc     subwf	0xcc, 0x1, 0       	SUBWF	_TMR2, F
+0003c6   d7f8     bra	0x3b8                	BRA	_00127_DS_
+0003c8   0012     return	0                 	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_main__rand	code
+                                           _rand:
+                                           ;	.line	49; main.c	uint8_t rand(){
+000406   cfd9     movff	0xfd9, 0xfe5       	MOVFF	FSR2L, POSTDEC1
+000408   ffe5
+00040a   cfe1     movff	0xfe1, 0xfd9       	MOVFF	FSR1L, FSR2L
+00040c   ffd9
+00040e   0100     movlb	0                  	BANKSEL _rand_seed
+000410   90d8     bcf	0xd8, 0, 0           	BCF STATUS,0
+000412   31c6     rrcf	0xc6, 0, 0x1        	RRCF _rand_seed,W
+000414   b0d8     btfsc	0xd8, 0, 0         	BTFSC STATUS,0
+000416   0ab4     xorlw	0xb4               	XORLW 0xB4
+000418   6fc6     movwf	0xc6, 0x1          	MOVWF _rand_seed
+                                           	
+00041a   0100     movlb	0                  	BANKSEL	_rand_seed
+                                           ;	.line	59; main.c	return  rand_seed;
+00041c   51c6     movf	0xc6, 0, 0x1        	MOVF	_rand_seed, W, B
+00041e   cfe4     movff	0xfe4, 0xfd9       	MOVFF	PREINC1, FSR2L
+000420   ffd9
+000422   0012     return	0                 	RETURN	
+                                           
+                                           
+                                           
+                                           ; Statistics:
+                                           ; code size:	  356 (0x0164) bytes ( 0.27%)
+                                           ;           	  178 (0x00b2) words
+                                           ; udata size:	   64 (0x0040) bytes (100.00%)
+                                           ; access size:	    1 (0x0001) bytes
+                                           
+                                           
+                                           	end

@@ -1,0 +1,622 @@
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00001 ;--------------------------------------------------------
+               00002 ; File Created by SDCC : FreeWare ANSI-C Compiler
+               00003 ; Version 2.6.0 #4309 (Sep 23 2007)
+               00004 ; This file generated Mon Jul  7 20:41:42 2008
+               00005 ;--------------------------------------------------------
+               00006 ; PIC16 port for the Microchip 16-bit core micros
+               00007 ;--------------------------------------------------------
+               00008         list    p=18f1320
+               00009 
+               00010         radix dec
+               00011 
+               00012 ;--------------------------------------------------------
+               00013 ; public variables in this module
+               00014 ;--------------------------------------------------------
+               00015         global _init_counter
+               00016         global _save_counter
+               00017         global _inc_counter
+               00018         global _count
+               00019         global _display_counter
+               00020 
+               00021 ;--------------------------------------------------------
+               00022 ; extern variables in this module
+               00023 ;--------------------------------------------------------
+               00024         extern _PORTAbits
+               00025         extern _PORTBbits
+               00026         extern _LATAbits
+               00027         extern _LATBbits
+               00028         extern _TRISAbits
+               00029         extern _TRISBbits
+               00030         extern _PIE1bits
+               00031         extern _PIR1bits
+               00032         extern _IPR1bits
+               00033         extern _PIE2bits
+               00034         extern _PIR2bits
+               00035         extern _IPR2bits
+               00036         extern _EECON1bits
+               00037         extern _RCSTAbits
+               00038         extern _TXSTAbits
+               00039         extern _T3CONbits
+               00040         extern _ECCPASbits
+               00041         extern _CCP1CONbits
+               00042         extern _ADCON2bits
+               00043         extern _ADCON1bits
+               00044         extern _ADCON0bits
+               00045         extern _T2CONbits
+               00046         extern _T1CONbits
+               00047         extern _RCONbits
+               00048         extern _WDTCONbits
+               00049         extern _LVDCONbits
+               00050         extern _OSCCONbits
+               00051         extern _STATUSbits
+               00052         extern _INTCON3bits
+               00053         extern _INTCON2bits
+               00054         extern _INTCONbits
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00055         extern _STKPTRbits
+               00056         extern _PORTA
+               00057         extern _PORTB
+               00058         extern _LATA
+               00059         extern _LATB
+               00060         extern _TRISA
+               00061         extern _TRISB
+               00062         extern _PIE1
+               00063         extern _PIR1
+               00064         extern _IPR1
+               00065         extern _PIE2
+               00066         extern _PIR2
+               00067         extern _IPR2
+               00068         extern _EECON1
+               00069         extern _EECON2
+               00070         extern _EEDATA
+               00071         extern _EEADR
+               00072         extern _BAUDCTL
+               00073         extern _RCSTA
+               00074         extern _TXSTA
+               00075         extern _TXREG
+               00076         extern _RCREG
+               00077         extern _SPBRG
+               00078         extern _SPBRGH
+               00079         extern _T3CON
+               00080         extern _TMR3L
+               00081         extern _TMR3H
+               00082         extern _ECCPAS
+               00083         extern _CCP1CON
+               00084         extern _CCPR1L
+               00085         extern _CCPR1H
+               00086         extern _ADCON2
+               00087         extern _ADCON1
+               00088         extern _ADCON0
+               00089         extern _ADRESL
+               00090         extern _ADRESH
+               00091         extern _T2CON
+               00092         extern _PR2
+               00093         extern _TMR2
+               00094         extern _T1CON
+               00095         extern _TMR1L
+               00096         extern _TMR1H
+               00097         extern _RCON
+               00098         extern _WDTCON
+               00099         extern _LVDCON
+               00100         extern _OSCCON
+               00101         extern _T0CON
+               00102         extern _TMR0L
+               00103         extern _TMR0H
+               00104         extern _STATUS
+               00105         extern _FSR2L
+               00106         extern _FSR2H
+               00107         extern _PLUSW2
+               00108         extern _PREINC2
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00109         extern _POSTDEC2
+               00110         extern _POSTINC2
+               00111         extern _INDF2
+               00112         extern _BSR
+               00113         extern _FSR1L
+               00114         extern _FSR1H
+               00115         extern _PLUSW1
+               00116         extern _PREINC1
+               00117         extern _POSTDEC1
+               00118         extern _POSTINC1
+               00119         extern _INDF1
+               00120         extern _WREG
+               00121         extern _FSR0L
+               00122         extern _FSR0H
+               00123         extern _PLUSW0
+               00124         extern _PREINC0
+               00125         extern _POSTDEC0
+               00126         extern _POSTINC0
+               00127         extern _INDF0
+               00128         extern _INTCON3
+               00129         extern _INTCON2
+               00130         extern _INTCON
+               00131         extern _PRODL
+               00132         extern _PRODH
+               00133         extern _TABLAT
+               00134         extern _TBLPTRL
+               00135         extern _TBLPTRH
+               00136         extern _TBLPTRU
+               00137         extern _PCL
+               00138         extern _PCLATH
+               00139         extern _PCLATU
+               00140         extern _STKPTR
+               00141         extern _TOSL
+               00142         extern _TOSH
+               00143         extern _TOSU
+               00144         extern _delay10tcy
+               00145 ;--------------------------------------------------------
+               00146 ;       Equates to used internal registers
+               00147 ;--------------------------------------------------------
+  00000FD8     00148 STATUS  equ     0xfd8
+  00000FE9     00149 FSR0L   equ     0xfe9
+  00000FEA     00150 FSR0H   equ     0xfea
+  00000FE1     00151 FSR1L   equ     0xfe1
+  00000FD9     00152 FSR2L   equ     0xfd9
+  00000FEF     00153 INDF0   equ     0xfef
+  00000FE5     00154 POSTDEC1        equ     0xfe5
+  00000FE4     00155 PREINC1 equ     0xfe4
+  00000FDB     00156 PLUSW2  equ     0xfdb
+               00157 
+               00158 
+               00159 ; Internal registers
+               00160 .registers      udata_ovr       0x0000
+               00161 r0x00   res     1
+               00162 r0x01   res     1
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00163 r0x02   res     1
+               00164 r0x03   res     1
+               00165 
+               00166 udata_counter_0 udata
+               00167 _count  res     6
+               00168 
+               00169 ;--------------------------------------------------------
+               00170 ; global & static initialisations
+               00171 ;--------------------------------------------------------
+               00172 ; I code from now on!
+               00173 ; ; Starting pCode block
+               00174 S_counter__inc_counter  code
+0000           00175 _inc_counter:
+               00176 ;       .line   87; counter.c   void inc_counter(){
+0000 C000 FFE5 00177         MOVFF   r0x00, POSTDEC1
+0004 C000 FFE5 00178         MOVFF   r0x01, POSTDEC1
+0008 C000 FFE5 00179         MOVFF   r0x02, POSTDEC1
+000C C000 FFE5 00180         MOVFF   r0x03, POSTDEC1
+               00181 ;       .line   90; counter.c   for (i = 0; i < sizeof(count); i++){
+0010 6A00      00182         CLRF    r0x00
+0012           00183 _00140_DS_:
+0012 0E06      00184         MOVLW   0x06
+0014 5C00      00185         SUBWF   r0x00, W
+0016 E200      00186         BC      _00143_DS_
+               00187 ;       .line   91; counter.c   count[i]++;
+0018 0E00      00188         MOVLW   LOW(_count)
+001A 2400      00189         ADDWF   r0x00, W
+001C 6E00      00190         MOVWF   r0x01
+001E 6A00      00191         CLRF    r0x02
+0020 0E00      00192         MOVLW   HIGH(_count)
+0022 2200      00193         ADDWFC  r0x02, F
+0024 C000 FFE9 00194         MOVFF   r0x01, FSR0L
+0028 C000 FFEA 00195         MOVFF   r0x02, FSR0H
+002C CFEF F000 00196         MOVFF   INDF0, r0x03
+0030 2A00      00197         INCF    r0x03, F
+0032 C000 FFE9 00198         MOVFF   r0x01, FSR0L
+0036 C000 FFEA 00199         MOVFF   r0x02, FSR0H
+003A C000 FFEF 00200         MOVFF   r0x03, INDF0
+               00201 ;       .line   93; counter.c   if (count[i]) break;
+003E 5000      00202         MOVF    r0x03, W
+0040 E100      00203         BNZ     _00143_DS_
+               00204 ;       .line   90; counter.c   for (i = 0; i < sizeof(count); i++){
+0042 2A00      00205         INCF    r0x00, F
+0044 D000      00206         BRA     _00140_DS_
+0046           00207 _00143_DS_:
+               00208 ;       .line   97; counter.c   if (i > 2){
+0046 0E03      00209         MOVLW   0x03
+0048 5C00      00210         SUBWF   r0x00, W
+004A E300      00211         BNC     _00145_DS_
+               00212 ;       .line   98; counter.c   save_counter(0,sizeof(count));
+004C 0E06      00213         MOVLW   0x06
+004E 6EE5      00214         MOVWF   POSTDEC1
+0050 0E00      00215         MOVLW   0x00
+0052 6AE5      00216         CLRF    POSTDEC1
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+0054 EC00 F000 00217         CALL    _save_counter
+0058 0E02      00218         MOVLW   0x02
+005A 26E1      00219         ADDWF   FSR1L, F
+005C           00220 _00145_DS_:
+               00221 ;       .line   101; counter.c  display_counter();
+005C EC00 F000 00222         CALL    _display_counter
+0060 CFE4 F000 00223         MOVFF   PREINC1, r0x03
+0064 CFE4 F000 00224         MOVFF   PREINC1, r0x02
+0068 CFE4 F000 00225         MOVFF   PREINC1, r0x01
+006C CFE4 F000 00226         MOVFF   PREINC1, r0x00
+0070 0012      00227         RETURN  
+               00228 
+               00229 ; ; Starting pCode block
+               00230 S_counter__display_counter      code
+0000           00231 _display_counter:
+               00232 ;       .line   64; counter.c   void display_counter(){
+0000 C000 FFE5 00233         MOVFF   r0x00, POSTDEC1
+0004 C000 FFE5 00234         MOVFF   r0x01, POSTDEC1
+0008 C000 FFE5 00235         MOVFF   r0x02, POSTDEC1
+               00236 ;       .line   67; counter.c   for (i = 0; i < sizeof(count); i++){
+000C 6A00      00237         CLRF    r0x00
+000E           00238 _00129_DS_:
+000E 0E06      00239         MOVLW   0x06
+0010 5C00      00240         SUBWF   r0x00, W
+0012 E200      00241         BC      _00133_DS_
+               00242 ;       .line   69; counter.c   clear_latches();
+0014 0EF1      00243         MOVLW   0xf1
+0016 1400      00244         ANDWF   _LATA, W
+0018 6E00      00245         MOVWF   r0x01
+001A 0E0C      00246         MOVLW   0x0c
+001C 1000      00247         IORWF   r0x01, W
+001E 6E00      00248         MOVWF   _LATA
+               00249 ;       .line   70; counter.c   delay10tcy(1);
+0020 0E01      00250         MOVLW   0x01
+0022 EC00 F000 00251         CALL    _delay10tcy
+               00252 ;       .line   73; counter.c   LATB = count[i];
+0026 0E00      00253         MOVLW   LOW(_count)
+0028 2400      00254         ADDWF   r0x00, W
+002A 6E00      00255         MOVWF   r0x01
+002C 6A00      00256         CLRF    r0x02
+002E 0E00      00257         MOVLW   HIGH(_count)
+0030 2200      00258         ADDWFC  r0x02, F
+0032 C000 FFE9 00259         MOVFF   r0x01, FSR0L
+0036 C000 FFEA 00260         MOVFF   r0x02, FSR0H
+003A CFEF F000 00261         MOVFF   INDF0, r0x01
+003E C000 F000 00262         MOVFF   r0x01, _LATB
+               00263 ;       .line   74; counter.c   if (count[i] & b(00001000)){
+0042 A600      00264         BTFSS   r0x01, 3
+0044 D000      00265         BRA     _00127_DS_
+               00266 ;       .line   75; counter.c   LATAbits.LATA6 = 1;
+0046 8C00      00267         BSF     _LATAbits, 6
+0048 D000      00268         BRA     _00128_DS_
+004A           00269 _00127_DS_:
+               00270 ;       .line   77; counter.c   LATAbits.LATA6 = 0;
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+004A 9C00      00271         BCF     _LATAbits, 6
+004C           00272 _00128_DS_:
+               00273 ;       .line   81; counter.c   delay10tcy(1);
+004C 0E01      00274         MOVLW   0x01
+004E EC00 F000 00275         CALL    _delay10tcy
+               00276 ;       .line   82; counter.c   select_byte(i);
+0052 0EF1      00277         MOVLW   0xf1
+0054 1400      00278         ANDWF   _LATA, W
+0056 6E00      00279         MOVWF   r0x01
+0058 5000      00280         MOVF    r0x00, W
+005A 2400      00281         ADDWF   r0x00, W
+005C 1000      00282         IORWF   r0x01, W
+005E 6E00      00283         MOVWF   _LATA
+               00284 ;       .line   83; counter.c   delay10tcy(1);
+0060 0E01      00285         MOVLW   0x01
+0062 EC00 F000 00286         CALL    _delay10tcy
+               00287 ;       .line   67; counter.c   for (i = 0; i < sizeof(count); i++){
+0066 2A00      00288         INCF    r0x00, F
+0068 D000      00289         BRA     _00129_DS_
+006A           00290 _00133_DS_:
+006A CFE4 F000 00291         MOVFF   PREINC1, r0x02
+006E CFE4 F000 00292         MOVFF   PREINC1, r0x01
+0072 CFE4 F000 00293         MOVFF   PREINC1, r0x00
+0076 0012      00294         RETURN  
+               00295 
+               00296 ; ; Starting pCode block
+               00297 S_counter__save_counter code
+0000           00298 _save_counter:
+               00299 ;       .line   35; counter.c   void save_counter(uint8_t start,uint8_t end){
+0000 CFD9 FFE5 00300         MOVFF   FSR2L, POSTDEC1
+0004 CFE1 FFD9 00301         MOVFF   FSR1L, FSR2L
+0008 C000 FFE5 00302         MOVFF   r0x00, POSTDEC1
+000C C000 FFE5 00303         MOVFF   r0x01, POSTDEC1
+0010 C000 FFE5 00304         MOVFF   r0x02, POSTDEC1
+0014 C000 FFE5 00305         MOVFF   r0x03, POSTDEC1
+0018 0E02      00306         MOVLW   0x02
+001A CFDB F000 00307         MOVFF   PLUSW2, r0x00
+001E 0E03      00308         MOVLW   0x03
+0020 CFDB F000 00309         MOVFF   PLUSW2, r0x01
+0024           00310 _00117_DS_:
+               00311 ;       .line   37; counter.c   for (i = start; i < end; i++){
+0024 5000      00312         MOVF    r0x01, W
+0026 5C00      00313         SUBWF   r0x00, W
+0028 E200      00314         BC      _00121_DS_
+               00315 ;       .line   38; counter.c   EEADR = i; 
+002A C000 F000 00316         MOVFF   r0x00, _EEADR
+               00317 ;       .line   40; counter.c   EEDATA = count[EEADR];
+002E 0E00      00318         MOVLW   LOW(_count)
+0030 2400      00319         ADDWF   _EEADR, W
+0032 6E00      00320         MOVWF   r0x02
+0034 6A00      00321         CLRF    r0x03
+0036 0E00      00322         MOVLW   HIGH(_count)
+0038 2200      00323         ADDWFC  r0x03, F
+003A C000 FFE9 00324         MOVFF   r0x02, FSR0L
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+003E C000 FFEA 00325         MOVFF   r0x03, FSR0H
+0042 CFEF F000 00326         MOVFF   INDF0, _EEDATA
+               00327 ;       .line   42; counter.c   EECON1bits.EEPGD = 0;
+0046 9E00      00328         BCF     _EECON1bits, 7
+               00329 ;       .line   43; counter.c   EECON1bits.CFGS = 0;
+0048 9C00      00330         BCF     _EECON1bits, 6
+               00331 ;       .line   44; counter.c   EECON1bits.WREN = 1;
+004A 8400      00332         BSF     _EECON1bits, 2
+004C 0E55      00333         movlw 0x55
+004E 6E00      00334         movwf _EECON2
+0050 0EAA      00335         movlw 0xAA
+0052 6E00      00336         movwf _EECON2
+0054 8200      00337         bsf _EECON1,1
+               00338         
+0056           00339 _00114_DS_:
+               00340 ;       .line   55; counter.c   while (EECON1bits.WR); // wait for write to finish
+0056 B200      00341         BTFSC   _EECON1bits, 1
+0058 D000      00342         BRA     _00114_DS_
+               00343 ;       .line   37; counter.c   for (i = start; i < end; i++){
+005A 2A00      00344         INCF    r0x00, F
+005C D000      00345         BRA     _00117_DS_
+005E           00346 _00121_DS_:
+005E CFE4 F000 00347         MOVFF   PREINC1, r0x03
+0062 CFE4 F000 00348         MOVFF   PREINC1, r0x02
+0066 CFE4 F000 00349         MOVFF   PREINC1, r0x01
+006A CFE4 F000 00350         MOVFF   PREINC1, r0x00
+006E CFE4 FFD9 00351         MOVFF   PREINC1, FSR2L
+0072 0012      00352         RETURN  
+               00353 
+               00354 ; ; Starting pCode block
+               00355 S_counter__init_counter code
+0000           00356 _init_counter:
+               00357 ;       .line   25; counter.c   void init_counter(){
+0000 C000 FFE5 00358         MOVFF   r0x00, POSTDEC1
+0004 C000 FFE5 00359         MOVFF   r0x01, POSTDEC1
+               00360 ;       .line   27; counter.c   for (EEADR = 0; EEADR < sizeof(count); EEADR++){
+0008 6A00      00361         CLRF    _EEADR
+000A           00362 _00105_DS_:
+000A 0E06      00363         MOVLW   0x06
+000C 5C00      00364         SUBWF   _EEADR, W
+000E E200      00365         BC      _00109_DS_
+               00366 ;       .line   28; counter.c   EECON1bits.EEPGD = 0;
+0010 9E00      00367         BCF     _EECON1bits, 7
+               00368 ;       .line   29; counter.c   EECON1bits.CFGS = 0;
+0012 9C00      00369         BCF     _EECON1bits, 6
+               00370 ;       .line   30; counter.c   EECON1bits.RD = 1;
+0014 8000      00371         BSF     _EECON1bits, 0
+               00372 ;       .line   31; counter.c   count[EEADR] = EEDATA;
+0016 0E00      00373         MOVLW   LOW(_count)
+0018 2400      00374         ADDWF   _EEADR, W
+001A 6E00      00375         MOVWF   r0x00
+001C 6A00      00376         CLRF    r0x01
+001E 0E00      00377         MOVLW   HIGH(_count)
+0020 2200      00378         ADDWFC  r0x01, F
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+0022 C000 FFE9 00379         MOVFF   r0x00, FSR0L
+0026 C000 FFEA 00380         MOVFF   r0x01, FSR0H
+002A C000 FFEF 00381         MOVFF   _EEDATA, INDF0
+               00382 ;       .line   27; counter.c   for (EEADR = 0; EEADR < sizeof(count); EEADR++){
+002E 2A00      00383         INCF    _EEADR, F
+0030 D000      00384         BRA     _00105_DS_
+0032           00385 _00109_DS_:
+0032 CFE4 F000 00386         MOVFF   PREINC1, r0x01
+0036 CFE4 F000 00387         MOVFF   PREINC1, r0x00
+003A 0012      00388         RETURN  
+               00389 
+               00390 
+               00391 
+               00392 ; Statistics:
+               00393 ; code size:      412 (0x019c) bytes ( 0.31%)
+               00394 ;                 206 (0x00ce) words
+               00395 ; udata size:       6 (0x0006) bytes ( 9.38%)
+               00396 ; access size:      4 (0x0004) bytes
+               00397 
+               00398 
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+FSR0H                             00000FEA
+FSR0L                             00000FE9
+FSR1L                             00000FE1
+FSR2L                             00000FD9
+INDF0                             00000FEF
+PLUSW2                            00000FDB
+POSTDEC1                          00000FE5
+PREINC1                           00000FE4
+STATUS                            00000FD8
+_00105_DS_                        0000000A
+_00109_DS_                        00000032
+_00114_DS_                        00000056
+_00117_DS_                        00000024
+_00121_DS_                        0000005E
+_00127_DS_                        0000004A
+_00128_DS_                        0000004C
+_00129_DS_                        0000000E
+_00133_DS_                        0000006A
+_00140_DS_                        00000012
+_00143_DS_                        00000046
+_00145_DS_                        0000005C
+_ADCON0                           00000000
+_ADCON0bits                       00000000
+_ADCON1                           00000000
+_ADCON1bits                       00000000
+_ADCON2                           00000000
+_ADCON2bits                       00000000
+_ADRESH                           00000000
+_ADRESL                           00000000
+_BAUDCTL                          00000000
+_BSR                              00000000
+_CCP1CON                          00000000
+_CCP1CONbits                      00000000
+_CCPR1H                           00000000
+_CCPR1L                           00000000
+_ECCPAS                           00000000
+_ECCPASbits                       00000000
+_EEADR                            00000000
+_EECON1                           00000000
+_EECON1bits                       00000000
+_EECON2                           00000000
+_EEDATA                           00000000
+_FSR0H                            00000000
+_FSR0L                            00000000
+_FSR1H                            00000000
+_FSR1L                            00000000
+_FSR2H                            00000000
+_FSR2L                            00000000
+_INDF0                            00000000
+_INDF1                            00000000
+_INDF2                            00000000
+_INTCON                           00000000
+_INTCON2                          00000000
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+_INTCON2bits                      00000000
+_INTCON3                          00000000
+_INTCON3bits                      00000000
+_INTCONbits                       00000000
+_IPR1                             00000000
+_IPR1bits                         00000000
+_IPR2                             00000000
+_IPR2bits                         00000000
+_LATA                             00000000
+_LATAbits                         00000000
+_LATB                             00000000
+_LATBbits                         00000000
+_LVDCON                           00000000
+_LVDCONbits                       00000000
+_OSCCON                           00000000
+_OSCCONbits                       00000000
+_PCL                              00000000
+_PCLATH                           00000000
+_PCLATU                           00000000
+_PIE1                             00000000
+_PIE1bits                         00000000
+_PIE2                             00000000
+_PIE2bits                         00000000
+_PIR1                             00000000
+_PIR1bits                         00000000
+_PIR2                             00000000
+_PIR2bits                         00000000
+_PLUSW0                           00000000
+_PLUSW1                           00000000
+_PLUSW2                           00000000
+_PORTA                            00000000
+_PORTAbits                        00000000
+_PORTB                            00000000
+_PORTBbits                        00000000
+_POSTDEC0                         00000000
+_POSTDEC1                         00000000
+_POSTDEC2                         00000000
+_POSTINC0                         00000000
+_POSTINC1                         00000000
+_POSTINC2                         00000000
+_PR2                              00000000
+_PREINC0                          00000000
+_PREINC1                          00000000
+_PREINC2                          00000000
+_PRODH                            00000000
+_PRODL                            00000000
+_RCON                             00000000
+_RCONbits                         00000000
+_RCREG                            00000000
+_RCSTA                            00000000
+_RCSTAbits                        00000000
+_SPBRG                            00000000
+_SPBRGH                           00000000
+_STATUS                           00000000
+gpasm-0.13.4 beta               counter.asm 7-7-2008  20:41:42           PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+_STATUSbits                       00000000
+_STKPTR                           00000000
+_STKPTRbits                       00000000
+_T0CON                            00000000
+_T1CON                            00000000
+_T1CONbits                        00000000
+_T2CON                            00000000
+_T2CONbits                        00000000
+_T3CON                            00000000
+_T3CONbits                        00000000
+_TABLAT                           00000000
+_TBLPTRH                          00000000
+_TBLPTRL                          00000000
+_TBLPTRU                          00000000
+_TMR0H                            00000000
+_TMR0L                            00000000
+_TMR1H                            00000000
+_TMR1L                            00000000
+_TMR2                             00000000
+_TMR3H                            00000000
+_TMR3L                            00000000
+_TOSH                             00000000
+_TOSL                             00000000
+_TOSU                             00000000
+_TRISA                            00000000
+_TRISAbits                        00000000
+_TRISB                            00000000
+_TRISBbits                        00000000
+_TXREG                            00000000
+_TXSTA                            00000000
+_TXSTAbits                        00000000
+_WDTCON                           00000000
+_WDTCONbits                       00000000
+_WREG                             00000000
+__18F1320                         00000001
+_count                            00000000
+_delay10tcy                       00000000
+_display_counter                  00000000
+_inc_counter                      00000000
+_init_counter                     00000000
+_save_counter                     00000000
+r0x00                             00000000
+r0x01                             00000001
+r0x02                             00000002
+r0x03                             00000003
+
+
+Errors   :       0
+Warnings :       0 reported,       0 suppressed
+Messages :       0 reported,       0 suppressed
+
