@@ -34,7 +34,7 @@ GPLINK=gplink
 
 OUTPUT_HEX=64-bit-counter.hex
 
-SRCS=counter.c eeprom.c main.c metrics.c user.c
+SRCS=counter.c main.c
 OBJS=${SRCS:%.c=%.o}
 
 all: $(OUTPUT_HEX) 
