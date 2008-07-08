@@ -22,7 +22,7 @@
 #include <counter.h>
 
 code char at __CONFIG1H config1h = 0xFF & _OSC_EXT_Port_on_RA6_1H & _FCMEN_ON_1H; 
-code char at __CONFIG2L config2l = 0xFF & _PUT_ON_2L & _BODEN_ON_2L & _BODENV_2_7V_2L;
+code char at __CONFIG2L config2l = 0xFF & _PUT_ON_2L & _BODEN_ON_2L & _BODENV_2_0V_2L;
 code char at __CONFIG2H config2h = 0xFF & _WDT_DISABLED_CONTROLLED_2H;
 code char at __CONFIG3H config3h = 0xFF & _MCLRE_MCLR_enabled_RA5_input_dis_3H;
 code char at __CONFIG4L config4l = 0xFF & _LVP_OFF_4L & _BACKBUG_OFF_4L & _STVR_OFF_4L;
@@ -86,8 +86,11 @@ SIGHANDLER(_tmr0_handler)
 SIGHANDLER(_oscfif_handler)
 
 {
-  // Save the lower three bytes of the counter to the eeprom
-  save_counter(0,3);
+  // Save the lower three bytes of the counter to the eeprom, in reverse order
+  // from most user visible to least.
+  save_counter(2,3);
+  save_counter(1,2);
+  save_counter(0,1);
 
   // Wait, this should ensure that the power has failed fully, or has come
   // back, without excessive writes to the eeprom.
